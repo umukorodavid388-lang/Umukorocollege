@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {% endblock %}
+{% block content %}
+<main class="main">
+
+  <!-- Page Title -->
+  <div class="page-title light-background">
+    <div class="container d-lg-flex justify-content-between align-items-center">
+      <h1 class="mb-2 mb-lg-0">Events</h1>
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li class="current">Events</li>
+        </ol>
+      </nav>
+    </div>
+  </div><!-- End Page Title -->
+
+  <!-- Events Extended Section -->
+  <section id="events-extended" class="events-extended section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row">
+        <div class="col-lg-8">
+          <!-- Events List -->
+          <div class="events-list">
+            <!-- Event Item 1 -->
+            {% if event %}
+            {% for events in event %}
+            <div class="event-item" data-aos="fade-up">
+              <div class="event-date">
+                <span class="day">{{events.get_day}}</span>
+                <span class="month">{{events.get_month}}</span>
+              </div>
+              <div class="event-content">
+                <h3 class="event-title">{{events.title}}</h3>
+                <div class="event-meta">
+                  <span><i class="bi bi-clock"></i> {{ events.start_time|time:"g:i A" }} - {{ events.end_time|time:"g:i A" }}</span>
+                  <span><i class="bi bi-geo-alt"></i> {{events.location}}</span>
+                </div>
+                <p class="event-description">{{events.description}}</p>
+                <a href="{% url 'event_detail' events.id %}" class="btn-event-details">Learn More <i class="bi bi-arrow-right"></i></a>
+              </div>
+            </div><!-- End Event Item -->
+            {% endfor %}
+            {% else %}
+            <p class="alert alert-info">No events available for this category.</p>
+            {% endif %}
+            <!-- Pagination -->
+            <div class="events-pagination" data-aos="fade-up" data-aos-delay="100">
+              <ul class="pagination justify-content-center">
+
+                <!-- Previous -->
+                <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                  <a class="page-link" {% if page_obj.has_previous %} href="?page={{ page_obj.previous_page_number }}"
+                    {% else %} href="#" {% endif %}>
+                    <i class="bi bi-arrow-left"></i>
+                  </a>
+                </li>
+
+                <!-- Page numbers -->
+                {% for num in page_obj.paginator.page_range %}
+                <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                  <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+                {% endfor %}
+
+                <!-- Next -->
+                <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                  <a class="page-link" {% if page_obj.has_next %} href="?page={{ page_obj.next_page_number }}" {% else
+                    %} href="#" {% endif %}>
+                    <i class="bi bi-arrow-right"></i>
+                  </a>
+                </li>
+
+              </ul>
+            </div>
+
+          </div><!-- End Events List -->
+        </div>
+
+        <div class="col-lg-4">
+          <!-- Sidebar -->
+          <div class="events-sidebar">
+            <!-- Search Form -->
+            <div class="sidebar-item search-form" data-aos="fade-up">
+              <h4>Search Events</h4>
+              <form action="{% url 'event' %}" method="get" class="search-form">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Search Events..." name="q">
+                  <button class="btn" type="submit"><i class="bi bi-search"></i></button>
+                </div>
+              </form>
+            </div><!-- End Search Form -->
+
+            <!-- Categories -->
+
+            <!-- Upcoming Events -->
+            <div class="sidebar-item upcoming-events" data-aos="fade-up" data-aos-delay="200">
+              <h4>Upcoming Featured Events</h4>
+
+              {% for event in upcoming_featured_events %}
+              <div class="featured-event">
+                <img src="{{ event.image.url }}" alt="{{ event.title }}" class="img-fluid">
+                <div class="featured-event-details">
+                  <h5>{{ event.title }}</h5>
+                  <span class="event-date"><i class="bi bi-calendar"></i> {{ event.date|date:"M d, Y" }}</span>
+                  <a href="{% url 'event_detail' event.id %}" class="btn-sm btn-register">Register Now</a>
+                </div>
+              </div>
+              {% empty %}
+              <p>No upcoming featured events.</p>
+              {% endfor %}
+
+            </div><!-- End Upcoming Events -->
+
+
+            <!-- Event Calendar -->
+            <div class="sidebar-item event-calendar" data-aos="fade-up" data-aos-delay="300">
+              <h4>Event Calendar</h4>
+              <div class="calendar-widget" id="calendar-widget" data-year="{{ cal_year }}" data-month="{{ cal_month }}">
+                <div class="calendar-header">
+                  <h5 id="calendar-title">{{ cal_month_name }} {{ cal_year }}</h5>
+                  <div class="calendar-nav">
+                    <a href="#" class="prev-month"><i class="bi bi-chevron-left"></i></a>
+                    <a href="#" class="next-month"><i class="bi bi-chevron-right"></i></a>
+                  </div>
+                </div>
+                <table class="calendar-table">
+                  <thead>
+                    <tr>
+                      <th>S</th>
+                      <th>M</th>
+                      <th>T</th>
+                      <th>W</th>
+                      <th>T</th>
+                      <th>F</th>
+                      <th>S</th>
+                    </tr>
+                  </thead>
+                  <tbody id="calendar-body">
+                    {% for week in cal_weeks %}
+                    <tr>
+                      {% for day in week %}
+                      {% if day == 0 %}
+                      <td class="empty"></td>
+                      {% else %}
+                      <td class="{% if day in cal_days_events %}has-event{% endif %}" data-day="{{ day }}">
+                        <div class="day-number">{{ day }}</div>
+                      </td>
+                      {% endif %}
+                      {% endfor %}
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+
+                <div id="calendar-events-list" class="calendar-events-list mt-2">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+            </div><!-- End Event Calendar -->
+            <script src="{% static 'assets/js/event-calendar.js' %}"></script>
+          </div><!-- End Sidebar -->
+        </div>
+      </div>
+
+    </div>
+
+  </section><!-- /Events Extended Section -->
+
+</main>
+{% endblock %}

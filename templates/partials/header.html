@@ -1,0 +1,42 @@
+<header id="header" class="header d-flex align-items-center sticky-top">
+    <div
+        class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-end">
+
+        <a href="{% url 'index' %}" class="logo d-flex align-items-center me-auto">
+            <!-- Uncomment the line below if you also wish to use an image logo -->
+            <!-- <img src="assets/img/logo.webp" alt=""> -->
+            <h1 class="sitename">UA Excellence</h1>
+        </a>
+
+        <nav id="navmenu" class="navmenu">
+            <ul>
+                <li><a href="{% url 'index' %}" class="active">Home</a></li>
+                <li class="dropdown"><a href="{% url 'about' %}"><span>About</span> <i
+                            class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                        <li><a href="{% url 'about' %}">About Us</a></li>
+                        <li><a href="{% url 'addmission' %}">Admissions</a></li>
+                        <li><a href="{% url 'academics' %}">Academics</a></li>
+                        <li><a href="{% url 'faculty_home' %}">Faculty &amp; Staff</a></li>
+                        <li><a href="{% url 'campus' %}">Campus &amp; Facilities</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="{% url 'students_life' %}">Students Life</a></li>
+                <li><a href="{% url 'news' %}">News</a></li>
+                <li><a href="{% url 'event' %}">Events</a></li>
+                <li><a href="{% url 'alumni' %}">Alumni</a></li>
+                <li class="dropdown"><a href="#"><span>More Pages</span> <i
+                            class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                        <li><a href="{% url 'privacy' %}">Privacy</a></li>
+                        <li><a href="{% url 'term_services' %}">Terms of Service</a></li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+
+    </div>
+</header>

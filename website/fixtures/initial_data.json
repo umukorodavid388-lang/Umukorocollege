@@ -1,0 +1,99 @@
+[
+  {
+    "model": "website.hero",
+    "pk": 1,
+    "fields": {
+      "title": "Welcome to Our College",
+      "content": "Inspiring excellence in education and community.",
+      "picture": "media/default-hero.jpg"
+    }
+  },
+  {
+    "model": "website.feature",
+    "pk": 1,
+    "fields": {
+      "name": "Quality Education",
+      "description": "Robust curriculum with hands-on learning.",
+      "image": "bi bi-book-fill",
+      "hero": 1
+    }
+  },
+  {
+    "model": "website.about",
+    "pk": 1,
+    "fields": {
+      "story_heading": "Our Story",
+      "story_title": "Educating Minds, Inspiring Hearts",
+      "story_content": "We have a long tradition of academic excellence and community service.",
+      "story_image": "media/about-campus.jpg",
+      "mission_title": "Our Mission",
+      "mission_content": "To empower students to reach their potential.",
+      "vision_title": "Our Vision",
+      "vision_content": "To be a leading institution of higher learning.",
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "website.timelineitem",
+    "pk": 1,
+    "fields": {
+      "about": 1,
+      "year": 1995,
+      "description": "College founded with a small cohort of students.",
+      "order": 0
+    }
+  },
+  {
+    "model": "website.corevalue",
+    "pk": 1,
+    "fields": {
+      "about": 1,
+      "name": "Integrity",
+      "description": "We uphold the highest ethical standards.",
+      "icon": "bi bi-shield-check",
+      "order": 0
+    }
+  },
+  {
+    "model": "website.upcomingevent",
+    "pk": 1,
+    "fields": {
+      "event_date": "2026-02-01",
+      "title": "Open Day 2026",
+      "content": "Join us for campus tours and program sessions.",
+      "rsvp_url": "https://example.com/rsvp",
+      "hero": 1
+    }
+  },
+  {
+    "model": "academics.program",
+    "pk": 1,
+    "fields": {
+      "title": "Bachelor of Computer Science",
+      "description": "A comprehensive program covering algorithms, systems, and AI.",
+      "icon": "media/program-cs.jpg",
+      "duration": "4 Years",
+      "degree_type": 1,
+      "is_featured": true,
+      "order": 0,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "academics.program",
+    "pk": 2,
+    "fields": {
+      "title": "Diploma in Business Studies",
+      "description": "Practical business skills and entrepreneurship.",
+      "icon": "media/program-biz.jpg",
+      "duration": "2 Years",
+      "degree_type": 4,
+      "is_featured": false,
+      "order": 1,
+      "created_at": "2025-01-01T00:00:00Z",
+      "updated_at": "2025-01-01T00:00:00Z"
+    }
+  }
+]

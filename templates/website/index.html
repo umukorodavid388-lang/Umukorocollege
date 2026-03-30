@@ -1,0 +1,765 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock %}
+{% load static %}
+{% block content %}
+
+<main class="main">
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero section">
+
+    <div class="hero-wrapper">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6 hero-content" data-aos="fade-right" data-aos-delay="100">
+            <h1>{{ hero.title }}</h1>
+            <p>{{ hero.content }}</p>
+            <div class="action-buttons">
+              <a href="#" class="btn-primary">Start Your Journey</a>
+              <a href="#" class="btn-secondary">Virtual Tour</a>
+            </div>
+          </div>
+          <div class="col-lg-6 hero-media" data-aos="zoom-in" data-aos-delay="200">
+            <img src="{{ hero.picture.url }}" alt="Education" width="100%" class="img-fluid main-image">
+            <div class="image-overlay">
+              <div class="badge-accredited">
+                <i class="bi bi-patch-check-fill"></i>
+                <span>Accredited Excellence</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature-cards-wrapper" data-aos="fade-up" data-aos-delay="300">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="bi bi-book-fill"></i>
+              </div>
+              <div class="feature-content">
+                <h3>{{ features.0.name }}</h3>
+                <p>{{ features.0.description }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="upcoming-event" data-aos="fade-up" data-aos-delay="400">
+      <div class="container">
+        {% if upcoming_event %}
+        <div class="event-content">
+          <div class="event-date">
+            <span class="day">{{ upcoming_event.day }}</span>
+            <span class="month">{{ upcoming_event.month }}</span>
+          </div>
+          <div class="event-info">
+            <h3>{{ upcoming_event.title }}</h3>
+            <p>{{ upcoming_event.content }}</p>
+          </div>
+          <div class="event-action">
+            <a href="#" class="btn-event">RSVP Now</a>
+            <span class="countdown">{{ upcoming_event.countdown_text }}</span>
+          </div>
+        </div>
+        {% else %}
+        <div class="event-content">
+          <div class="event-info">
+            <h3>No Upcoming Events</h3>
+            <p>Please check back later for updates on our events.</p>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </section><!-- /Hero Section -->
+
+  <!-- About Section -->
+  <section id="about" class="about section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <div class="about-content" data-aos="fade-up" data-aos-delay="200">
+            <h3>{{ about.story_heading }}</h3>
+            <h2>{{ about.story_title }}</h2>
+            <p>{{ about.story_content }}</p>
+
+            <div class="timeline">
+              {% if timeline_items %}
+              {% for item in timeline_items %}
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <h4>{{ item.year }}</h4>
+                  <p>{{ item.description }}</p>
+                </div>
+              </div>
+              {% endfor %}
+              {% else %}
+              <div class="timeline-item">
+                  <h4>2020</h4>
+                  <p>No timeline events available at the moment.</p>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="about-image" data-aos="zoom-in" data-aos-delay="300">
+            {% if about.story_image %}
+            <img src="{{ about.story_image.url }}" alt="Campus" class="img-fluid rounded">
+            {% else %}
+            <img src="{{ about.story_image.url }}" alt="Campus" class="img-fluid rounded">
+            {% endif %}
+
+            <div class="mission-vision" data-aos="fade-up" data-aos-delay="400">
+              <div class="mission">
+                <h3>{{ about.mission_title }}</h3>
+                <p>{{ about.mission_content }}</p>
+              </div>
+
+              <div class="vision">
+                <h3>{{ about.vision_title }}</h3>
+                <p>{{ about.vision_content }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-5">
+        <div class="col-lg-12">
+          <div class="core-values" data-aos="fade-up" data-aos-delay="500">
+            <h3 class="text-center mb-4">Core Values</h3>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+              {% for value in core_values %}
+              <div class="col">
+                <div class="value-card">
+                  <div class="value-icon">
+                    <i class="{{ value.icon }}"></i>
+                  </div>
+                  <h4>{{ value.name }}</h4>
+                  <p>{{ value.description }}</p>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section><!-- /About Section -->
+
+  <!-- Featured Programs Section -->
+  <section id="featured-programs" class="featured-programs section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <h2>Featured Programs</h2>
+      <p class="section-subheading">Explore our most popular and impactful academic programs</p>
+    </div><!-- End Section Title -->
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row gy-5">
+        {% if featured_program %}
+        <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
+          <div class="program-banner">
+            <div class="banner-image">
+              <img src="{{ featured_program.icon.url }}" alt="{{ featured_program.title }}" class="img-fluid">
+            </div>
+            <div class="banner-info">
+              <div class="program-header">
+                <h3>{{ featured_program.title }}</h3>
+                <div class="program-stats">
+                  <span><i class="bi bi-people-fill"></i> {{ featured_program.students_count }} Students</span>
+                  <span><i class="bi bi-award-fill"></i> {{ featured_program.success_rate }}% Success Rate</span>
+                </div>
+              </div>
+              <p>{{ featured_program.description }}</p>
+              <div class="program-details">
+                <div class="detail-item">
+                  <i class="bi bi-calendar-check"></i>
+                  <span>Duration: {{ featured_program.duration }}</span>
+                </div>
+                <div class="detail-item">
+                  <i class="bi bi-mortarboard-fill"></i>
+                  <span>{{ featured_program.get_degree_type_display }}</span>
+                </div>
+              </div>
+              <a href="#" class="discover-btn">Discover Program</a>
+            </div>
+          </div>
+        </div><!-- End Program Banner -->
+        {% endif %}
+
+        <div class="col-lg-6">
+          <div class="programs-grid">
+            <div class="row g-3">
+              {% for program in programs %}
+              <div class="col-12" data-aos="fade-left" data-aos-delay="{% if forloop.counter == 1 %}200{% elif forloop.counter == 2 %}300{% elif forloop.counter == 3 %}400{% else %}500{% endif %}">
+                <div class="program-item">
+                  <div class="item-icon">
+                    <img src="{{ program.icon.url }}" alt="{{ program.title }}" class="img-fluid">
+                  </div>
+                  <div class="item-content">
+                    <h4>{{ program.title }}</h4>
+                    <p>{{ program.description }}</p>
+                    <div class="meta-info">
+                      <span>{{ program.duration }}</span>
+                      <span>{{ program.get_degree_type_display }}</span>
+                    </div>
+                  </div>
+                  <div class="item-arrow">
+                    <i class="bi bi-arrow-right"></i>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div><!-- End Programs Grid -->
+
+      </div>
+
+    </div>
+
+  </section><!-- /Featured Programs Section -->
+
+  <!-- Students Life Block Section -->
+  <section id="students-life-block" class="students-life-block section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <h2>Students Life</h2>
+      <p class="section-subheading">Experience vibrant campus life beyond academics</p>
+    </div><!-- End Section Title -->
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row align-items-center g-5 mb-5">
+        <div class="col-lg-5" data-aos="fade-right" data-aos-delay="200">
+          <div class="hero-image-wrapper">
+            <img src="{{ students_life.main_image.url }}" alt="{{ students_life.title }}" class="img-fluid main-image" loading="lazy">
+
+            <div class="floating-card" data-aos="zoom-in" data-aos-delay="400">
+              <div class="card-icon">
+                <i class="bi bi-people-fill"></i>
+              </div>
+              <div class="card-content">
+                <span class="card-number">{{ students_life.active_students_count }}</span>
+                <span class="card-label">Active Students</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7" data-aos="fade-left" data-aos-delay="300">
+          <div class="content-wrapper">
+            <div class="section-badge" data-aos="fade-up" data-aos-delay="350">
+              <span>Student Life</span>
+            </div>
+            <h2 data-aos="fade-up" data-aos-delay="400">{{ students_life.title }}</h2>
+            <p class="lead-text" data-aos="fade-up" data-aos-delay="450">{{ students_life.description }}</p>
+
+            <div class="cta-section" data-aos="fade-up" data-aos-delay="600">
+              <a href="#" class="btn-primary">Discover More</a>
+              <a href="#" class="btn-link">
+                <i class="bi bi-play-circle"></i>
+                <span>Take Virtual Tour</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="activities-showcase">
+        <div class="row g-4">
+          <div class="col-lg-8" data-aos="fade-right" data-aos-delay="200">
+            <div class="featured-activity">
+              <div class="activity-media">
+                  {% with featured=students_activities.0 %}
+                    <img src="{{ featured.image.url }}" alt="{{ featured.title }}" class="img-fluid" loading="lazy">
+                    <div class="activity-overlay">
+                      <div class="overlay-content">
+                        <h4>{{ featured.title }}</h4>
+                        <p>{{ featured.description }}</p>
+                        <a href="#" class="overlay-btn">
+                          <i class="bi bi-arrow-right"></i>
+                        </a>
+                      </div>
+                    </div>
+                  {% endwith %}
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4" data-aos="fade-left" data-aos-delay="300">
+            <div class="activities-list">
+                {% for activity in students_activities|slice:"1:4" %}
+                <div class="activity-item" data-aos="slide-up" data-aos-delay="{{ 350|add:forloop.counter0|add:0 }}">
+                  <div class="activity-thumb">
+                    <img src="{{ activity.image.url }}" alt="{{ activity.title }}" class="img-fluid" loading="lazy">
+                  </div>
+                  <div class="activity-info">
+                    <h6>{{ activity.title }}</h6>
+                    <p>{{ activity.description }}</p>
+                  </div>
+                </div>
+                {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section><!-- /Students Life Block Section -->
+
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="testimonials section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <h2>Testimonials</h2>
+      <p class="section-subheading">What our students say about their experience</p>
+    </div><!-- End Section Title -->
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="testimonial-slider swiper init-swiper">
+        <script type="application/json" class="swiper-config">
+            {
+              "loop": true,
+              "speed": 600,
+              "autoplay": {
+                "delay": 4000
+              },
+              "slidesPerView": 1,
+              "spaceBetween": 30,
+              "navigation": {
+                "nextEl": ".swiper-button-next",
+                "prevEl": ".swiper-button-prev"
+              },
+              "breakpoints": {
+                "768": {
+                  "slidesPerView": 2
+                },
+                "1200": {
+                  "slidesPerView": 3
+                }
+              }
+            }
+          </script>
+
+        <div class="swiper-wrapper">
+
+          <!-- Testimonial Slide 1 -->
+          <div class="swiper-slide">
+            <div class="testimonial-item" data-aos="zoom-in" data-aos-delay="200">
+              <div class="testimonial-header">
+                <img src="{% static 'assets/img/person/person-f-12.webp' %}" alt="Client" class="img-fluid" loading="lazy">
+                <div class="rating">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </div>
+              </div>
+              <div class="testimonial-body">
+                <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+                  laborum consectetur adipiscing elit sed eiusmod tempor.</p>
+              </div>
+              <div class="testimonial-footer">
+                <h5>Jessica Martinez</h5>
+                <span>UX Designer</span>
+                <div class="quote-icon">
+                  <i class="bi bi-chat-quote-fill"></i>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Testimonial Slide -->
+
+          <!-- Testimonial Slide 2 -->
+          <div class="swiper-slide">
+            <div class="testimonial-item" data-aos="zoom-in" data-aos-delay="300">
+              <div class="testimonial-header">
+                <img src="{% static 'assets/img/person/person-m-8.webp' %}" alt="Client" class="img-fluid" loading="lazy">
+                <div class="rating">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </div>
+              </div>
+              <div class="testimonial-body">
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur
+                  excepteur sint occaecat cupidatat non proident sunt in culpa.</p>
+              </div>
+              <div class="testimonial-footer">
+                <h5>David Rodriguez</h5>
+                <span>Software Engineer</span>
+                <div class="quote-icon">
+                  <i class="bi bi-chat-quote-fill"></i>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Testimonial Slide -->
+
+          <!-- Testimonial Slide 3 -->
+          <div class="swiper-slide">
+            <div class="testimonial-item" data-aos="zoom-in" data-aos-delay="400">
+              <div class="testimonial-header">
+                <img src="{% static 'assets/img/person/person-f-6.webp' %}" alt="Client" class="img-fluid" loading="lazy">
+                <div class="rating">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </div>
+              </div>
+              <div class="testimonial-body">
+                <p>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et
+                  dolore magna aliqua ut enim ad minim veniam quis nostrud.</p>
+              </div>
+              <div class="testimonial-footer">
+                <h5>Amanda Wilson</h5>
+                <span>Creative Director</span>
+                <div class="quote-icon">
+                  <i class="bi bi-chat-quote-fill"></i>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Testimonial Slide -->
+
+          <!-- Testimonial Slide 4 -->
+          <div class="swiper-slide">
+            <div class="testimonial-item" data-aos="zoom-in" data-aos-delay="500">
+              <div class="testimonial-header">
+                <img src="{% static 'assets/img/person/person-m-12.webp' %}" alt="Client" class="img-fluid" loading="lazy">
+                <div class="rating">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </div>
+              </div>
+              <div class="testimonial-body">
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium
+                  totam rem aperiam eaque ipsa quae ab illo inventore veritatis.</p>
+              </div>
+              <div class="testimonial-footer">
+                <h5>Ryan Thompson</h5>
+                <span>Business Analyst</span>
+                <div class="quote-icon">
+                  <i class="bi bi-chat-quote-fill"></i>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Testimonial Slide -->
+
+          <!-- Testimonial Slide 5 -->
+          <div class="swiper-slide">
+            <div class="testimonial-item" data-aos="zoom-in" data-aos-delay="600">
+              <div class="testimonial-header">
+                <img src="{% static 'assets/img/person/person-f-10.webp' %}" alt="Client" class="img-fluid" loading="lazy">
+                <div class="rating">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </div>
+              </div>
+              <div class="testimonial-body">
+                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
+                  deleniti atque corrupti quos dolores et quas molestias excepturi.</p>
+              </div>
+              <div class="testimonial-footer">
+                <h5>Rachel Chen</h5>
+                <span>Project Manager</span>
+                <div class="quote-icon">
+                  <i class="bi bi-chat-quote-fill"></i>
+                </div>
+              </div>
+            </div>
+          </div><!-- End Testimonial Slide -->
+
+        </div>
+
+        <div class="swiper-navigation">
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section><!-- /Testimonials Section -->
+
+  <!-- Stats Section -->
+  <section id="stats" class="stats section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+          <div class="intro-content" data-aos="fade-up" data-aos-delay="200">
+            <h2 class="section-heading">Transforming Lives Through Quality Education</h2>
+            <p class="section-subheading">Join thousands of students who have achieved their dreams with us</p>   
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4 mt-4">
+        <div class="col-xl-3 col-lg-6 col-md-6">
+          <div class="metric-card" data-aos="flip-left" data-aos-delay="300">
+            <div class="metric-header">
+              <div class="metric-icon-wrapper">
+                <i class="{{ stats.icon }}"></i>
+              </div>
+              <div class="metric-value">
+                <span data-purecounter-start="0" data-purecounter-end="{{ stats.success_rate }}" data-purecounter-duration="1"
+                  class="purecounter"></span>%
+              </div>
+            </div>
+            <div class="metric-info">
+              <h4>{{ stats.title }}</h4>
+              <p>{{ stats.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section><!-- /Stats Section -->
+
+  <!-- Recent News Section -->
+  <section id="recent-news" class="recent-news section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <h2>Recent News</h2>
+      <p class="section-subheading">Stay updated with the latest news and stories from our community</p>
+    </div><!-- End Section Title -->
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row gy-4">
+        {% for news in new %}
+        <div class="col-xl-6" data-aos="fade-up" data-aos-delay="100">
+          <article class="post-item d-flex">
+            <div class="post-img">
+              <img src="{{news.picture.url}}" alt="" class="img-fluid" loading="lazy">
+            </div>
+
+            <div class="post-content flex-grow-1">
+              <a href="#" class="category">{{news.category.text}}</a>
+              <h2 class="post-title">
+                <a href="#">{{news.title}}</a>
+              </h2>
+
+              <p class="post-description">
+               {{news.content}}
+              </p>
+
+              <div class="post-meta">
+                <div class="post-author">
+                  <img src="{{news.user.pics.url}}" alt="" class="img-fluid">
+                  <span class="author-name">{{news.user.student_name}}</span>
+                </div>
+                <span class="post-date">{{news.created_date|date:"M d, Y" }}</span>
+              </div>
+            </div>
+          </article>
+        </div><!-- End post item -->
+        {% endfor %}
+      </div>
+
+    </div>
+
+  </section><!-- /Recent News Section -->
+
+  <!-- Events Section -->
+  <section id="events" class="events section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <h2>Events</h2>
+      <p class="section-subheading">Join us for upcoming events and activities</p>
+    </div><!-- End Section Title -->
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row g-4">
+        {% for event in events %}
+        <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="{% if forloop.counter == 1 %}100{% elif forloop.counter == 2 %}200{% else %}300{% endif %}">
+          <div class="event-item">
+            <div class="event-image">
+              <img src="{{ event.image.url }}" alt="{{ event.title }}" class="img-fluid">
+              <div class="event-date-overlay">
+                <span class="date">{{ event.get_month }}<br>{{ event.get_day }}</span>
+              </div>
+            </div>
+            <div class="event-details">
+              <div class="event-category">
+                <span class="badge {{event.get_eventcategories_display_lower}}">{{ event.get_eventcategories_display }}</span>
+                <span class="event-time">{{ event.start_time|time:"g:i A" }} - {{ event.end_time|time:"g:i A" }}</span>
+              </div>
+              <h3>{{ event.title }}</h3>
+              <p>{{ event.description }}</p>
+              <div class="event-info">
+                <div class="info-row">
+                  <i class="bi bi-geo-alt"></i>
+                  <span>{{ event.location }}</span>
+                </div>
+                <div class="info-row">
+                  <i class="bi bi-people"></i>
+                  <span>{{ event.participant_count }} Participants</span>
+                </div>
+              </div>
+              <div class="event-footer">
+                <a href="{% url 'event_detail' event.id %}" class="register-btn">Register Now</a>
+                <div class="event-share">
+                  <a class="like-btn" data-event-id="{{ event.id }}" title="Like">
+                    <i class="bi bi-heart"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="col-lg-12">
+          <div class="alert alert-info text-center">
+            <p>No upcoming events at the moment. Please check back soon!</p>
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+
+    </div>
+
+  </section><!-- /Events Section -->
+
+</main>
+{% block extra_scripts %} 
+<script>
+// Wait for DOM to be ready
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM loaded, initializing event handlers');
+
+  // Get CSRF token from meta tag
+  const getCsrfToken = () => {
+    return document.querySelector('meta[name="csrf-token"]')?.content || '';
+  };
+
+  // Handle Event Likes using event delegation
+  document.addEventListener('click', function(e) {
+    const likeBtn = e.target.closest('.like-btn');
+    if (!likeBtn) return;
+    
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const eventId = likeBtn.dataset.eventId;
+    const likeCountSpan = likeBtn.querySelector('.like-count');
+    const csrfToken = getCsrfToken();
+    
+    console.log('Like clicked for event:', eventId);
+    console.log('CSRF Token:', csrfToken ? 'Present' : 'Missing');
+    
+    fetch(`/events/${eventId}/like/`, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': csrfToken,
+        'Content-Type': 'application/json'
+      },
+      credentials: 'same-origin'
+    })
+    .then(response => {
+      console.log('Response status:', response.status);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Like response:', data);
+      if (data.success) {
+        likeCountSpan.textContent = data.likes_count;
+        likeBtn.classList.toggle('liked');
+        console.log('Like button state:', likeBtn.classList.contains('liked') ? 'Liked' : 'Unliked');
+      }
+    })
+    .catch(error => console.error('Like error:', error));
+  });
+
+  // Handle Event Shares using event delegation
+  document.addEventListener('click', function(e) {
+    const shareBtn = e.target.closest('.share-btn');
+    if (!shareBtn) return;
+    
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const eventId = shareBtn.dataset.eventId;
+    const shareCountSpan = shareBtn.querySelector('.share-count');
+    const csrfToken = getCsrfToken();
+    
+    console.log('Share clicked for event:', eventId);
+    console.log('CSRF Token:', csrfToken ? 'Present' : 'Missing');
+    
+    const formData = new FormData();
+    formData.append('shared_to', shareBtn.dataset.platform);
+    
+    fetch(`/events/${eventId}/share/`, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': csrfToken
+      },
+      body: formData,
+      credentials: 'same-origin'
+    })
+    .then(response => {
+      console.log('Response status:', response.status);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Share response:', data);
+      if (data.success) {
+        shareCountSpan.textContent = data.shares_count;
+        shareBtn.classList.add('shared');
+        console.log('Share button marked as shared');
+        alert(data.message);
+      }
+    })
+    .catch(error => console.error('Share error:', error));
+  });
+
+  console.log('Event handlers initialized');
+});
+</script>
+{% endblock %}
+{% endblock %}

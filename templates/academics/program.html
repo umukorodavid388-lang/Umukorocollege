@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Academics{% endblock %}
+{% block content %}
+
+<main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title light-background">
+        <div class="container d-lg-flex justify-content-between align-items-center">
+            <h1 class="mb-2 mb-lg-0">Academics</h1>
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="{% url 'academics' %}">Academics</a></li>
+                    <li class="current">Programs</li>
+                </ol>
+            </nav>
+        </div>
+    </div><!-- End Page Title -->
+
+    <!-- Academics Section -->
+    <section id="academics" class="academics section">
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="programs-section mb-5">
+                <div class="section-header text-center mb-5" data-aos="fade-up" data-aos-delay="200">
+                    <h3>Our Academic Programs</h3>
+                    <p>Explore our diverse range of undergraduate and graduate programs</p>
+                </div>
+
+                <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+                    <ul class="programs-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
+
+                        <li data-filter="*" class="filter-active">All Programs</li>
+                        {% for i in program_intrests %}
+                        <li data-filter=".{{i.name|slugify}}">{{i.name}}</li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
+                        {% if programs %}
+                        {% for program in programs %}
+                        <div class="col-lg-4 col-md-6 program-item isotope-item {{program.degree_type.name|slugify}}">
+                            <div class="program-card">
+                                <div class="program-img">
+                                    <img src="{{program.icon.url}}" alt="{{program.title}}"
+                                        class="img-fluid">
+                                    <div class="program-tag">{{program.degree_type}}</div>
+                                </div>
+                                <div class="program-content">
+                                    <h4>{{program.title}}</h4>
+                                    <p>{{program.description}}</p>
+                                    <div class="program-meta">
+                                        <div class="meta-item">
+                                            <i class="bi bi-clock"></i>
+                                            <span>{{program.duration}}</span>
+                                        </div>
+                                        <div class="meta-item">
+                                            <i class="bi bi-mortarboard"></i>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="program-link">Learn More <i class="bi bi-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <div class="col-12 text-center">
+                            <h4>No Programs Found. Come back later</h4>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section><!-- /Academics Section -->
+
+</main>
+{% endblock %}

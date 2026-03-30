@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Faculty Staff{% endblock %}
+{% block content %}
+<main class="main">
+
+  <!-- Page Title -->
+  <div class="page-title light-background">
+    <div class="container d-lg-flex justify-content-between align-items-center">
+      <h1 class="mb-2 mb-lg-0">Faculty Staff</h1>
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li class="current">Faculty Staff</li>
+        </ol>
+      </nav>
+    </div>
+  </div><!-- End Page Title -->
+
+  <!-- Faculty  Staff Section -->
+  <section id="faculty--staff" class="faculty--staff section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row mb-5">
+        <div class="col-lg-8 mx-auto">
+          <div class="faculty-search">
+            <form method="GET" action="{% url 'faculty_home' %}">
+              <div class="input-group">
+                <input type="text" name="q" value="{{ request.GET.q }}" class="form-control"
+                  placeholder="Search faculty by name, department or research area...">
+                <button class="search-btn" type="submit">
+                  <i class="bi bi-search"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="faculty-grid">
+        <div class="row g-4">
+          <!-- Faculty Member 1 -->
+          {% for member in staff_members %}
+          <div class="col-lg-4 col-md-6 data-aos=" fade-up" data-aos-delay="100">
+            <div class="faculty-card">
+              <div class="faculty-image">
+                {% if member.picture %}
+                <img src="{{ member.picture.url }}" class="img-fluid" alt="{{ member.name }}">
+                {% else %}
+                <img src="{% static 'assets/img/pictures.jpg' %}" class="img-fluid" alt="{{ member.name }}">
+                {% endif %}
+                <div class="social-links">
+                  <a href="#"><i class="bi bi-twitter"></i></a>
+                  <a href="#"><i class="bi bi-linkedin"></i></a>
+                  <a href="#"><i class="bi bi-envelope"></i></a>
+                </div>
+              </div>
+              <div class="faculty-info">
+                <h3>{{ member.name }}</h3>
+                <p class="position">{{ member.work_tile }}</p>
+                <div class="department">{{ member.content }}</div>
+                <a href="#" class="profile-link">View Profile</a>
+              </div>
+            </div>
+          </div><!-- End Faculty Member -->
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="pagination-container mt-5 d-flex justify-content-center" data-aos="fade-up">
+        <nav aria-label="Faculty pagination">
+          <ul class="pagination">
+
+            {# PREVIOUS #}
+            <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+              <a class="page-link"
+                href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% else %}#{% endif %}"
+                aria-label="Previous">
+                <i class="bi bi-chevron-left"></i>
+              </a>
+            </li>
+
+            {# PAGE NUMBERS #}
+            {% for num in page_obj.paginator.page_range %}
+            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+              <a class="page-link" href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}">
+                {{ num }}
+              </a>
+            </li>
+            {% endfor %}
+
+            {# NEXT #}
+            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+              <a class="page-link"
+                href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% else %}#{% endif %}"
+                aria-label="Next">
+                <i class="bi bi-chevron-right"></i>
+              </a>
+            </li>
+
+          </ul>
+        </nav>
+      </div>
+
+
+    </div>
+
+  </section><!-- /Faculty  Staff Section -->
+
+</main>
+{% endblock %}

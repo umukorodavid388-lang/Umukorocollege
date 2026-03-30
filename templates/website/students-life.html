@@ -1,0 +1,276 @@
+{% extends 'base.html' %}
+{% block title %}Student Life - College{% endblock %}
+{% load static %}
+{% block content %}
+<main class="main">
+
+  <!-- Page Title -->
+  <div class="page-title light-background">
+    <div class="container d-lg-flex justify-content-between align-items-center">
+      <h1 class="mb-2 mb-lg-0">Student Life</h1>
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li class="current">Students Life</li>
+        </ol>
+      </nav>
+    </div>
+  </div><!-- End Page Title -->
+
+  <!-- Students Life Section -->
+  <section id="students-life" class="students-life section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row">
+        <div class="col-lg-6 d-flex align-items-center" data-aos="fade-right" data-aos-delay="200">
+          <img src="{{ student_life_intro.image.url }}" class="img-fluid rounded" alt="{{ student_life_intro.title }}">
+        </div>
+        <div class="col-lg-6" data-aos="fade-left" data-aos-delay="300">
+          <div class="student-life-intro">
+            <h3>{{ student_life_intro.title|default:"Vibrant Campus Experience" }}</h3>
+            <p>{{ student_life_intro.description_first }}</p>
+            {% if student_life_intro.description_second %}
+            <p>{{ student_life_intro.description_second }}</p>
+            {% endif %}
+            <div class="mt-4">
+              <a href="{{ student_life_intro.button_link|default:'#' }}" class="btn btn-outline-primary">Explore Campus</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="student-organizations mt-5 pt-4" data-aos="fade-up" data-aos-delay="200">
+        <h3 class="text-center mb-4">Student Organizations &amp; Clubs</h3>
+        <div class="row g-4">
+          {% if student_organizations %}
+          {% for organization in student_organizations %}
+          <div class="col-md-4" data-aos="zoom-in"
+            data-aos-delay="{% if forloop.counter == 1 %}200{% elif forloop.counter == 2 %}300{% else %}400{% endif %}">
+            <div class="organization-card">
+              <div class="icon-box">
+                <i class="{{ organization.icon }}"></i>
+              </div>
+              <h5>{{ organization.name }}</h5>
+              <p>{{ organization.description }}</p>
+              <span class="badge">{{ organization.badge_text }}</span>
+            </div>
+          </div>
+          {% endfor %}
+          {% else %}
+          <p class="text-center">No student organizations available at the moment.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="athletics-programs mt-5 pt-3" data-aos="fade-up" data-aos-delay="200">
+        <h3 class="text-center mb-4">Athletics &amp; Recreation</h3>
+
+        <div class="athletics-slider swiper init-swiper" data-aos="fade-up" data-aos-delay="300">
+          <script type="application/json" class="swiper-config">
+              {
+                "loop": true,
+                "speed": 600,
+                "autoplay": {
+                  "delay": 5000
+                },
+                "slidesPerView": 1,
+                "spaceBetween": 30,
+                "pagination": {
+                  "el": ".swiper-pagination",
+                  "type": "bullets",
+                  "clickable": true
+                },
+                "breakpoints": {
+                  "768": {
+                    "slidesPerView": 2
+                  },
+                  "992": {
+                    "slidesPerView": 3
+                  }
+                }
+              }
+            </script>
+          <div class="swiper-wrapper">
+            {% if athletics_programs %}
+            {% for program in athletics_programs %}
+            <div class="swiper-slide">
+              <div class="athletics-card">
+                <img src="{{ program.image.url }}" class="img-fluid" loading="lazy" alt="{{ program.name }}">
+                <div class="athletics-content">
+                  <h5>{{ program.name }}</h5>
+                  <p>{{ program.description }}</p>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p class="text-center">No athletics programs available at the moment.</p>
+            {% endif %}
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+
+      <div class="campus-facilities mt-5 pt-3" data-aos="fade-up" data-aos-delay="200">
+        <h3 class="text-center mb-4">Campus Facilities</h3>
+
+        <div class="row g-4">
+          {% if campus_facilities %}
+          {% for facility in campus_facilities %}
+          <div class="col-md-6 col-lg-3" data-aos="fade-up"
+            data-aos-delay="{% if forloop.counter == 1 %}100{% elif forloop.counter == 2 %}200{% elif forloop.counter == 3 %}300{% else %}400{% endif %}">
+            <div class="facility-card">
+              <img src="{{ facility.image.url }}" class="img-fluid" alt="{{ facility.name }}">
+              <div class="facility-info">
+                <h5>{{ facility.name }}</h5>
+                <p>{{ facility.description }}</p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          {% else %}
+          <p class="text-center">No campus facilities available at the moment.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="support-services mt-5 pt-3" data-aos="fade-up" data-aos-delay="200">
+        <h3 class="text-center mb-4">Student Support Services</h3>
+
+        <div class="row g-4">
+          {% if support_services %}
+          {% for service in support_services %}
+          <div class="col-lg-4 col-md-6" data-aos="fade-up"
+            data-aos-delay="{% if forloop.counter == 1 %}100{% elif forloop.counter == 2 %}200{% else %}300{% endif %}">
+            <div class="service-card">
+              <div class="icon-box">
+                <i class="{{ service.icon }}"></i>
+              </div>
+              <h5>{{ service.title }}</h5>
+              <p>{{ service.description }}</p>
+              <a href="{{ service.link|default:'#' }}" class="service-link">Learn More <i
+                  class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+          {% endfor %}
+          {% else %}
+          <p class="text-center">No support services available at the moment.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="student-gallery mt-5 pt-3" data-aos="fade-up" data-aos-delay="200">
+        <h3 class="text-center mb-4">Student Life Gallery</h3>
+
+        <div class="row g-3">
+          {% if gallery_images %}
+          {% for image in gallery_images %}
+          <div class="col-md-4" data-aos="zoom-in"
+            data-aos-delay="{% if forloop.counter == 1 %}100{% elif forloop.counter == 2 %}200{% elif forloop.counter == 3 %}300{% elif forloop.counter == 4 %}400{% elif forloop.counter == 5 %}500{% else %}600{% endif %}">
+            <a href="{{ image.image.url }}" class="gallery-item glightbox">
+              <img src="{{ image.image.url }}" class="img-fluid" loading="lazy"
+                alt="{{ image.title|default:'Student Life' }}">
+              <div class="gallery-overlay">
+                <i class="bi bi-plus-circle"></i>
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+          {% else %}
+          <p class="text-center">No gallery images available at the moment.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}" role="alert">
+        {{ message }}
+      </div>
+      {% endfor %}
+      {% endif %}
+
+      <div class="cta-block mt-5 pt-3" data-aos="fade-up" data-aos-delay="200">
+        <div class="row align-items-center">
+          <div class="col-lg-8" data-aos="fade-right" data-aos-delay="300">
+            <h3>Ready to Experience Student Life?</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce varius felis nec sem viverra, nec
+              tincidunt felis mollis.</p>
+          </div>
+          <div class="col-lg-4 text-lg-end mt-4 mt-lg-0" data-aos="fade-left" data-aos-delay="400">
+            <a href="#schedule-visit-modal" class="btn btn-primary" data-bs-toggle="modal"
+              data-bs-target="#schedule-visit-modal">Schedule a Visit</a>
+            <a href="{% url 'contact' %}" class="btn btn-outline-primary ms-2">Contact Us</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- Campus Visit Modal -->
+    <div class="modal fade" id="schedule-visit-modal" tabindex="-1" aria-labelledby="visitModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="visitModalLabel">Schedule Your Campus Visit</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form method="POST" action="{% url 'submit_campus_visit' %}">
+            {% csrf_token %}
+            <div class="modal-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="visit_name" class="form-label">Full Name*</label>
+                  <input type="text" class="form-control" id="visit_name" name="name" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="visit_email" class="form-label">Email*</label>
+                  <input type="email" class="form-control" id="visit_email" name="email" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="visit_phone" class="form-label">Phone*</label>
+                  <input type="tel" class="form-control" id="visit_phone" name="phone" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="visit_type" class="form-label">Visit Type*</label>
+                  <select class="form-select" id="visit_type" name="visit_type" required>
+                    <option value="in_person">In-Person Tour</option>
+                    <option value="virtual">Virtual Tour</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="visit_date" class="form-label">Preferred Date*</label>
+                  <input type="date" class="form-control" id="visit_date" name="preferred_date" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="visit_time" class="form-label">Preferred Time*</label>
+                  <input type="time" class="form-control" id="visit_time" name="preferred_time" required>
+                </div>
+                <div class="col-md-6">
+                  <label for="visit_count" class="form-label">Number of Visitors</label>
+                  <input type="number" class="form-control" id="visit_count" name="number_of_visitors" value="1"
+                    min="1">
+                </div>
+                <div class="col-12">
+                  <label for="visit_requests" class="form-label">Special Requests</label>
+                  <textarea class="form-control" id="visit_requests" name="special_requests" rows="3"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Book Visit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+  </section><!-- /Students Life Section -->
+
+</main>
+{% endblock %}

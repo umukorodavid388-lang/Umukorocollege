@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% block tiltle %}{% endblock %}
+{% load static %}
+{% block content %}
+<main class="main">
+
+  <!-- Page Title -->
+  <div class="page-title light-background">
+    <div class="container d-lg-flex justify-content-between align-items-center">
+      <h1 class="mb-2 mb-lg-0">About</h1>
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li class="current">About</li>
+        </ol>
+      </nav>
+    </div>
+  </div><!-- End Page Title -->
+
+  <!-- History Section -->
+  <section id="history" class="history section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <div class="about-content" data-aos="fade-up" data-aos-delay="200">
+            <h3>{{ abouts.story_heading }}</h3>
+            <h2>{{ abouts.story_title }}</h2>
+            <p>{{ abouts.story_content }}</p>
+
+            <div class="timeline">
+              {% if timeline_items %}
+              {% for item in timeline_items %}
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <h4>{{ item.year }}</h4>
+                  <p>{{ item.description }}</p>
+                </div>
+              </div>
+              {% endfor %}
+              {% else %}
+              <div class="timeline-item">
+                <h4>2020</h4>
+                <p>No timeline events available at the moment.</p>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="about-image" data-aos="zoom-in" data-aos-delay="300">
+            {% if abouts.story_image %}
+            <img src="{{ abouts.story_image.url }}" alt="Campus" class="img-fluid rounded">
+            {% else %}
+            <img src="{{abouts.story_image.url}}" alt="Campus" class="img-fluid rounded">
+            {% endif %}
+
+            <div class="mission-vision" data-aos="fade-up" data-aos-delay="400">
+              <div class="mission">
+                <h3>{{ abouts.mission_title }}</h3>
+                <p>{{ abouts.mission_content }}</p>
+              </div>
+
+              <div class="vision">
+                <h3>{{ abouts.vision_title }}</h3>
+                <p>{{ abouts.vision_content }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-5">
+        <div class="col-lg-12">
+          <div class="core-values" data-aos="fade-up" data-aos-delay="500">
+            <h3 class="text-center mb-4">Core Values</h3>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+              {% for value in core_values %}
+              <div class="col">
+                <div class="value-card">
+                  <div class="value-icon">
+                    <i class="{{ value.icon }}"></i>
+                  </div>
+                  <h4>{{ value.name }}</h4>
+                  <p>{{ value.description }}</p>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section><!-- /About Section -->
+
+
+  <!-- Leadership Section -->
+  <section id="leadership" class="leadership section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="intro-wrapper">
+        <div class="row align-items-center">
+          <div class="col-lg-6 order-lg-2 mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="200">
+            <div class="intro-image">
+              <img src="{{leader.pics.url}}" alt="School Leadership"
+                class="img-fluid rounded-lg">
+              <div class="experience-badge">
+                <!-- <span class="years">35+</span>
+                <span class="text">Years of Educational Excellence</span> -->
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 order-lg-1" data-aos="fade-up" data-aos-delay="300">
+            <div class="intro-content">
+              <span class="subtitle">Administration &amp; Leadership</span>
+              <h2 class="title">{{leader.title}}</h2>
+              <p class="description">{{leader.description}}</p>
+              <div class="highlights">
+                {% for icon in icon %}
+                <div class="highlight-item">
+                  <div class="icon-box">
+                    <i class="{{icon.icon}}"></i>
+                  </div>
+                  <div class="content">
+                    <h4>{{icon.text}}</h4>
+                    <p>{{icon.content}}</p>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="leadership-section" data-aos="fade-up">
+        <div class="section-header text-center">
+          <span class="subtitle">Our Team</span>
+          <h2 class="title">Meet Our Distinguished Leadership</h2>
+          <p class="description">
+            Our leadership team is dedicated to fostering an environment of excellence, innovation, and inclusivity. With a wealth of experience and a shared vision for the future, they guide our institution towards achieving its mission and goals.
+          </p>
+        </div>
+
+        <div class="row g-4">
+          {% for staff in staff %}
+          <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="team-card">
+              <div class="card-inner">
+                <div class="card-front">
+                  <div class="member-image">
+                    {% if staff.picture %}
+                    <img src="{{staff.picture.url}}" alt="Client">
+                    {% else %}
+                    <img src="{% static 'assets/img/pictures.jpg' %}" alt="">
+                    {% endif %}
+                  </div>
+                  <div class="member-info">
+                    <h4>{{staff.name}}</h4>
+                    <p>{{staff.work_tile}}</p>
+                  </div>
+                </div>
+                <div class="card-back">
+                  <h4>{{staff.name}}</h4>
+                  <p>{{staff.work_tile}}</p>
+                  <p class="bio">{{staff.content}}
+                  </p>
+                  <div class="social-links">
+                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="#"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#"><i class="bi bi-envelope"></i></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+
+  </section><!-- /Leadership Section -->
+
+</main>
+{% endblock %}

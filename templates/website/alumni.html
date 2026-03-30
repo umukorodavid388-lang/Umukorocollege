@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock %}
+{% block content %}
+<main class="main">
+
+  <!-- Page Title -->
+  <div class="page-title light-background">
+    <div class="container d-lg-flex justify-content-between align-items-center">
+      <h1 class="mb-2 mb-lg-0">Alumni</h1>
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li class="current">Alumni</li>
+        </ol>
+      </nav>
+    </div>
+  </div><!-- End Page Title -->
+
+  <!-- Alumni Section -->
+  <section id="alumni" class="alumni section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row mb-5">
+        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="alumni-intro">
+            <h2>Our Alumni Network</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis,
+              pulvinar dapibus leo. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis
+              bibendum auctor.</p>
+            <div class="alumni-stats d-flex flex-wrap">
+              <div class="stat-item">
+                <span class="stat-number">{{ network_stats.total_alumni_worldwide|default:"0" }}</span>
+                <span class="stat-label">Alumni Worldwide</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">{{ network_stats.total_countries|default:118 }}</span>
+                <span class="stat-label">Countries</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">{{ network_stats.years_of_excellence|default:0 }}+</span>
+                <span class="stat-label">Years of Excellence</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
+          <div class="alumni-image">
+            <img src="{% static 'assets/img/education/campus-8.webp' %}" alt="Alumni gathering" class="img-fluid rounded">
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-5">
+        <div class="col-12 text-center mb-4" data-aos="fade-up" data-aos-delay="200">
+          <h3>Success Stories</h3>
+          <p class="lead">Meet some of our distinguished alumni making a difference around the world</p>
+        </div>
+
+        {% if success_stories and success_stories.exists %}
+          {% for story in success_stories %}
+            <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:300 }}">
+              <div class="alumni-card">
+                <div class="alumni-image">
+                  {% if story.image %}
+                    <img src="{{ story.image.url }}" alt="{{ story.name }}" class="img-fluid">
+                  {% else %}
+                    <img src="{% static 'assets/img/person/person-m-4.webp' %}" alt="{{ story.name }}" class="img-fluid">
+                  {% endif %}
+                </div>
+                <div class="alumni-content">
+                  <h4>{{ story.name }}</h4>
+                  <p class="alumni-class">Class of {{ story.graduation_year }}</p>
+                  <p class="alumni-position">{{ story.position }}{% if story.organization %}, {{ story.organization }}{% endif %}</p>
+                  <p>{{ story.description|truncatewords:30 }}</p>
+                  {% if story.story_link %}
+                    <a href="{{ story.story_link }}" class="read-more">Read full story <i class="bi bi-arrow-right"></i></a>
+                  {% else %}
+                    <a href="#" class="read-more">Read full story <i class="bi bi-arrow-right"></i></a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="col-12 text-center">
+            <p>No success stories available at the moment.</p>
+          </div>
+        {% endif %}
+
+        <div class="col-12 text-center mt-3" data-aos="fade-up" data-aos-delay="600">
+          <a href="#" class="btn btn-primary">View More Success Stories</a>
+        </div>
+      </div>
+
+      <div class="row mb-5 alumni-events-section">
+        <div class="col-12 mb-4 text-center" data-aos="fade-up" data-aos-delay="200">
+          <h3>Upcoming Alumni Events</h3>
+          <p class="lead">Connect with fellow graduates at these exciting events</p>
+        </div>
+
+        {% if upcoming_events and upcoming_events.exists %}
+          {% for ev in upcoming_events %}
+            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:300 }}">
+              <div class="event-card">
+                <div class="event-date">
+                  <span class="event-day">{{ ev.get_day }}</span>
+                  <span class="event-month">{{ ev.get_month }}</span>
+                </div>
+                <div class="event-details">
+                  <h4>{{ ev.title }}</h4>
+                  <p><i class="bi bi-geo-alt"></i> {{ ev.location }}</p>
+                  <p><i class="bi bi-clock"></i> {{ ev.start_time }} - {{ ev.end_time }}</p>
+                  <p>{{ ev.description|truncatewords:30 }}</p>
+                  <a href="{% url 'event_detail' ev.id %}" class="btn btn-outline-primary">Register Now</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="col-12 text-center">
+            <p>No upcoming alumni events scheduled.</p>
+          </div>
+        {% endif %}
+
+        <div class="col-12 text-center mt-4" data-aos="fade-up" data-aos-delay="500">
+          <a href="#" class="btn btn-link">View All Events <i class="bi bi-calendar-check"></i></a>
+        </div>
+      </div>
+
+      <div class="row get-involved-section">
+        <div class="col-12 text-center mb-4" data-aos="fade-up" data-aos-delay="200">
+          <h3>Get Involved</h3>
+          <p class="lead">Ways to stay connected and give back to your alma mater</p>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="300">
+          <div class="involvement-card">
+            <div class="involvement-icon">
+              <i class="bi bi-hand-thumbs-up"></i>
+            </div>
+            <h4>Mentor a Student</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Sed nec justo ac magna auctor,
+              vel volutpat nisl mollis.</p>
+            <a href="#" class="btn btn-sm btn-outline-primary mt-2">Learn More</a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="400">
+          <div class="involvement-card">
+            <div class="involvement-icon">
+              <i class="bi bi-award"></i>
+            </div>
+            <h4>Scholarship Fund</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Sed nec justo ac magna auctor,
+              vel volutpat nisl mollis.</p>
+            <a href="#" class="btn btn-sm btn-outline-primary mt-2">Donate Now</a>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="500">
+          <div class="involvement-card">
+            <div class="involvement-icon">
+              <i class="bi bi-people"></i>
+            </div>
+            <h4>Alumni Association</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Sed nec justo ac magna auctor,
+              vel volutpat nisl mollis.</p>
+            <a href="#" class="btn btn-sm btn-outline-primary mt-2">Join Today</a>
+          </div>
+        </div>
+
+        <div class="col-12 mt-4" data-aos="fade-up" data-aos-delay="600">
+          <div class="donation-banner">
+            <div class="row align-items-center">
+              <div class="col-lg-8 mb-3 mb-lg-0">
+                <h3>Support the Future Generation</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper
+                  mattis, pulvinar dapibus leo. Aenean sollicitudin, lorem quis bibendum auctor.</p>
+              </div>
+              <div class="col-lg-4 text-lg-end">
+                <a href="#" class="btn btn-primary btn-lg">Make a Donation</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section><!-- /Alumni Section -->
+
+</main>
+
+{% endblock %}

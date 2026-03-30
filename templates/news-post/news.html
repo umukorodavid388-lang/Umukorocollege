@@ -1,0 +1,277 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {% endblock %}
+{% block content %}
+<main class="main">
+
+  <!-- Page Title -->
+  <div class="page-title light-background">
+    <div class="container d-lg-flex justify-content-between align-items-center">
+      <h1 class="mb-2 mb-lg-0">News</h1>
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li class="current">News</li>
+        </ol>
+      </nav>
+    </div>
+  </div><!-- End Page Title -->
+
+  <!-- News Hero Section -->
+  <section id="news-hero" class="news-hero section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row g-4">
+        <!-- Main Content Area -->
+        <div class="col-lg-8">
+          <!-- Featured Article -->
+          <article class="featured-post position-relative mb-4" data-aos="fade-up">
+            <img src="{{ news.picture.url }}" alt="Featured post" class="img-fluid">
+            <div class="post-overlay">
+              <div class="post-content">
+                <div class="post-meta">
+                  <span class="category">{{ news.category.text }}</span>
+                  <span class="date">{{ news.created_date|date:"M d, Y" }}</span>
+                </div>
+                <h2 class="post-title">
+                  <a href="">{{ news.title }}</a>
+                </h2>
+                <p class="post-excerpt">{{ news.content }}</p>
+                <div class="post-author">
+                  <span>by</span>
+                  <a href="#">{{ news.user.student_name }}</a>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div><!-- End Main Content Area -->
+
+        <!-- Sidebar with Tabs -->
+        <div class="col-lg-4">
+          <div class="news-tabs" data-aos="fade-up" data-aos-delay="200">
+
+            <!-- Tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#top-stories" type="button">
+                  Top Stories
+                </button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#trending" type="button">
+                  Trending News
+                </button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#latest" type="button">
+                  Latest News
+                </button>
+              </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+
+              <!-- 🔥 TOP STORIES -->
+              <div class="tab-pane fade show active" id="top-stories">
+                {% for post in top_stories %}
+                <article class="tab-post">
+                  <div class="row g-0 align-items-center">
+                    <div class="col-4">
+                      <img src="{{ post.picture.url }}" alt="{{ post.title }}" class="img-fluid rounded">
+                    </div>
+                    <div class="col-8">
+                      <div class="post-content">
+                        <span class="category">{{ post.category.text }}</span>
+                        <h4 class="post-title">
+                          <a href="{% url 'post_detail' post.id %}">
+                            {{ post.title|truncatewords:20 }}
+                          </a>
+                        </h4>
+                        <div class="post-author">
+                          by <a href="#">{{ post.user.student_name }}</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+                {% empty %}
+                <p class="text-muted p-3">No top stories yet.</p>
+                {% endfor %}
+              </div>
+
+              <!-- 🔥 TRENDING NEWS -->
+              <div class="tab-pane fade" id="trending">
+                {% for post in trending_news %}
+                <article class="tab-post">
+                  <div class="row g-0 align-items-center">
+                    <div class="col-4">
+                      <img src="{{ post.picture.url }}" alt="{{ post.title }}" class="img-fluid rounded">
+                    </div>
+                    <div class="col-8">
+                      <div class="post-content">
+                        <span class="category">{{ post.category.text }}</span>
+                        <h4 class="post-title">
+                          <a href="{% url 'post_detail' post.id %}">
+                            {{ post.title }}
+                          </a>
+                        </h4>
+                        <div class="post-author">
+                          by <a href="#">{{ post.user.student_name }}</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+                {% empty %}
+                <p class="text-muted p-3">No trending news yet.</p>
+                {% endfor %}
+              </div>
+
+              <!-- 🆕 LATEST NEWS -->
+              <div class="tab-pane fade" id="latest">
+                {% for post in latest_news %}
+                <article class="tab-post">
+                  <div class="row g-0 align-items-center">
+                    <div class="col-4">
+                      <img src="{{ post.picture.url }}" alt="{{ post.title }}" class="img-fluid rounded">
+                    </div>
+                    <div class="col-8">
+                      <div class="post-content">
+                        <span class="category">{{ post.category.text }}</span>
+                        <h4 class="post-title">
+                          <a href="{% url 'post_detail' post.id %}">
+                            {{ post.title }}
+                          </a>
+                        </h4>
+                        <div class="post-author">
+                          by <a href="#">{{ post.user.student_name }}</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+                {% empty %}
+                <p class="text-muted p-3">No latest news yet.</p>
+                {% endfor %}
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section><!-- /News Hero Section -->
+
+  <!-- News Posts Section -->
+  <section id="news-posts" class="news-posts section">
+
+    <div class="container">
+
+      <div class="row gy-4">
+
+        {% for i in new %}
+        <div class="col-xl-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+          <article>
+
+            <!-- Post Image -->
+            <div class="post-img">
+              {% if i.picture %}
+              <img src="{{ i.picture.url }}" alt="{{ i.title }}" class="img-fluid">
+              {% endif %}
+            </div>
+
+            <!-- Categories -->
+            <p class="post-category">{{ i.category.text }}</p>
+
+            <!-- Title -->
+            <h2 class="title">
+              <a href="{% url 'post_detail' i.id %}">
+                {{ i.title }}
+              </a>
+            </h2>
+
+            <!-- Author -->
+            <div class="d-flex align-items-center">
+              {% if i.user.pics %}
+              <img src="{{ i.user.pics.url }}" alt="{{ i.user.student_name }}"
+                class="img-fluid post-author-img flex-shrink-0">
+              {% endif %}
+
+              <div class="post-meta">
+                <p class="post-author">{{ i.user.student_name }}</p>
+                <p class="post-date">
+                  <time datetime="{{ i.created_date|date:'Y-m-d' }}">
+                    {{ i.created_date|date:"M d, Y" }}
+                  </time>
+                </p>
+              </div>
+            </div>
+
+          </article>
+        </div>
+        {% empty %}
+        <p class="text-muted">No news available.</p>
+        {% endfor %}
+
+      </div><!-- End recent posts list -->
+
+
+    </div>
+
+  </section><!-- /News Posts Section -->
+
+<!-- Pagination 2 Section -->
+<section id="pagination-2" class="pagination-2 section">
+  <div class="container">
+    <nav class="d-flex justify-content-center" aria-label="Page navigation">
+      <ul>
+
+        {# PREVIOUS #}
+        <li>
+          {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous page">
+              <i class="bi bi-arrow-left"></i>
+              <span class="d-none d-sm-inline">Previous</span>
+            </a>
+          {% else %}
+            <a class="disabled">
+              <i class="bi bi-arrow-left"></i>
+              <span class="d-none d-sm-inline">Previous</span>
+            </a>
+          {% endif %}
+        </li>
+
+        {# PAGE NUMBERS #}
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+            <li><a href="#" class="active">{{ num }}</a></li>
+          {% elif num >= page_obj.number|add:-2 and num <= page_obj.number|add:2 %}
+            <li><a href="?page={{ num }}">{{ num }}</a></li>
+          {% endif %}
+        {% endfor %}
+
+        {# NEXT #}
+        <li>
+          {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" aria-label="Next page">
+              <span class="d-none d-sm-inline">Next</span>
+              <i class="bi bi-arrow-right"></i>
+            </a>
+          {% else %}
+            <a class="disabled">
+              <span class="d-none d-sm-inline">Next</span>
+              <i class="bi bi-arrow-right"></i>
+            </a>
+          {% endif %}
+        </li>
+
+      </ul>
+    </nav>
+  </div>
+</section>
+<!-- /Pagination 2 Section -->
+</main>
+{% endblock %}

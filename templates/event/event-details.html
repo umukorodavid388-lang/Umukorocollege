@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Event Details{% endblock %}
+{% block content %}
+<main class="main">
+
+  <!-- Page Title -->
+  <div class="page-title light-background">
+    <div class="container d-lg-flex justify-content-between align-items-center">
+      <h1 class="mb-2 mb-lg-0">Event Details</h1>
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="{% url 'event' %}">Event</a></li>
+          <li class="current">Event Details</li>
+        </ol>
+      </nav>
+    </div>
+  </div><!-- End Page Title -->
+
+  <!-- Event Section -->
+  <section id="event" class="event section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="event-image mb-4" data-aos="fade-up">
+            <img src="{{event_details.image.url}}" alt="Event" class="img-fluid rounded">
+          </div>
+
+          <div class="event-meta mb-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <div class="meta-item">
+                  <i class="bi bi-calendar-date"></i>
+                  <span>{{event_details.date|date:"F d, Y"}}</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="meta-item">
+                  <i class="bi bi-clock"></i>
+                  <span>{{event_details.start_time|time:"g:i A"}} - {{event_details.end_time|time:"g:i A"}}</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="meta-item">
+                  <i class="bi bi-geo-alt"></i>
+                  <span>{{event_details.location}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="event-content" data-aos="fade-up" data-aos-delay="200">
+            <h2>{{event_details.title}}</h2>
+            <p>
+              {{event_details.description}}
+            </p>
+
+            <h3 class="mt-4">Event Highlights</h3>
+            <ul class="event-highlights">
+              {% if highlight %}
+              {% for i in highlight %}
+              <li>
+                <i class="bi bi-check-circle"></i>
+                <span>{{i.text}}</span>
+              </li>
+              {% endfor %}
+              {% else %}
+              <p class="alert alert-info">No highlights available.</p>
+              {% endif %}
+            </ul>
+
+            <h3 class="mt-4">Event Schedule</h3>
+            {% if shedule %}
+            {% for schedules in shedule %}
+            <div class="schedule-table">
+              <div class="schedule-row">
+                <div class="schedule-time">{{schedules.start_time|time:"g:i A"}} - {{schedules.end_time|time:"g:i A"}}
+                </div>
+                <div class="schedule-activity">
+                  <h4>{{schedules.title}}</h4>
+                  <p>{{schedules.details}}</p>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p class="alert alert-info">No schedule available.</p>
+            {% endif %}
+
+            <div class="event-gallery mt-5" data-aos="fade-up" data-aos-delay="300">
+              <h3>Event Gallery</h3>
+              <p>Images from previous year's science exhibition:</p>
+              <div class="row g-4 mt-2">
+                {% if gallery %}
+                {% for i in gallery %}
+                <div class="col-md-4">
+                  <a href="{{i.image.url}}" class="glightbox">
+                    <img src="{{i.image.url}}" alt="Event Gallery" class="img-fluid rounded">
+                  </a>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p class="alert alert-info">No gallery images available.</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="event-sidebar">
+            <div class="sidebar-widget registration-form" data-aos="fade-left" data-aos-delay="200">
+              <h3>Register for this Event</h3>
+              <form method="POST">
+                {% csrf_token %}
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}" role="alert">
+                  {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+
+                <div class="mb-3">
+                  <label class="form-label">Full Name</label>
+                  <input type="text" class="form-control" name="name" required>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Email Address</label>
+                  <input type="email" class="form-control" name="email" required>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Phone Number</label>
+                  <input type="tel" class="form-control" name="phone">
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">You are a</label>
+                  <select class="form-select" name="student_type" id="student_type" required>
+                    <option value="">Select an option</option>
+                    <option value="student">Student</option>
+                    <option value="parent">Parent</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <!-- Hidden input for "Other" -->
+                <div class="mb-3 d-none" id="other_type_div">
+                  <label class="form-label">Please specify</label>
+                  <input type="text" class="form-control" name="other_type">
+                </div>
+
+                <div class="d-grid">
+                  <button type="submit" class="btn btn-register">Register Now</button>
+                </div>
+              </form>
+
+            </div>
+
+            <div class="sidebar-widget organizer-info" data-aos="fade-left" data-aos-delay="300">
+              <h3>Event Organizer</h3>
+              {% if organizer %}
+              <div class="organizer-details">
+                {% if organizer.image %}
+                <div class="organizer-image">
+                  <img src="{{ organizer.image.url }}" class="img-fluid rounded" alt="Organizer">
+                </div>
+                {% elif organizer.eventstaff and organizer.eventstaff.picture %}
+                <div class="organizer-image">
+                  <img src="{{ organizer.eventstaff.picture.url }}" class="img-fluid rounded" alt="Organizer">
+                </div>
+                {% endif %}
+                <div class="organizer-content">
+                  <h4>{% if organizer.name %}{{ organizer.name }}{% elif organizer.eventstaff %}{{ organizer.eventstaff.name }}{% endif %}</h4>
+                  <p class="organizer-position">{% if organizer.position %}{{ organizer.position }}{% elif organizer.eventstaff %}{{ organizer.eventstaff.work_title }}{% endif %}</p>
+                  {% if organizer.details %}<p>{{ organizer.details }}</p>{% endif %}
+                  <p>For queries related to the event, please contact:</p>
+                  <div class="organizer-contact">
+                    <p><i class="bi bi-envelope"></i> {% if organizer.email %}{{ organizer.email }}{% elif organizer.eventstaff %}{{ organizer.eventstaff.email }}{% endif %}</p>
+                    <p><i class="bi bi-telephone"></i> {% if organizer.phone_no %}{{ organizer.phone_no }}{% elif organizer.eventstaff %}{{ organizer.eventstaff.number }}{% endif %}</p>
+                  </div>
+                </div>
+              </div>
+              {% else %}
+              <p class="alert alert-info">No organizer information available.</p>
+              {% endif %}
+            </div>
+
+            <div class="sidebar-widget related-events" data-aos="fade-left" data-aos-delay="400">
+              <h3>Related Events</h3>
+              {% if related_events %}
+              {% for event in related_events %}
+              <div class="related-event-item">
+                <div class="related-event-date">
+                  <span class="day">{{ event.date|date:"d" }}</span>
+                  <span class="month">{{ event.date|date:"M" }}</span>
+                </div>
+                <div class="related-event-info">
+                  <h4>{{ event.title }}</h4>
+                  <p><i class="bi bi-geo-alt"></i> {{ event.location }}</p>
+                </div>
+              </div>
+              {% endfor %}
+              {% else %}
+              <p class="alert alert-info">No related events available.</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section><!-- /Event Section -->
+
+</main>
+{% endblock %}

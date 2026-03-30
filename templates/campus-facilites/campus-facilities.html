@@ -1,0 +1,336 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock %}
+{% block content %}
+<main class="main">
+
+  <!-- Page Title -->
+  <div class="page-title light-background">
+    <div class="container d-lg-flex justify-content-between align-items-center">
+      <h1 class="mb-2 mb-lg-0">Campus &amp; Facilities</h1>
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li class="current">Campus Facilities</li>
+        </ol>
+      </nav>
+    </div>
+  </div><!-- End Page Title -->
+
+  <!-- Campus Facilities Section -->
+  <section id="campus-facilities" class="campus-facilities section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <!-- Hero Introduction Row -->
+      <div class="hero-intro">
+        <div class="row g-0 align-items-center">
+          <div class="col-lg-8" data-aos="fade-right" data-aos-delay="200">
+            <div class="content-wrapper">
+              <div class="badge-highlight">Campus Excellence</div>
+              <h1>{{ campus_info.title }}</h1>
+              <p class="lead-text">{{ campus_info.description }}</p>
+              <div class="feature-highlights">
+                <div class="highlight-item">
+                  <i class="bi bi-award"></i>
+                  <div>
+                    <span class="number">{{ campus_info.buildings_count }}</span>
+                    <span class="label">Buildings</span>
+                  </div>
+                </div>
+                <div class="highlight-item">
+                  <i class="bi bi-geo-alt"></i>
+                  <div>
+                    <span class="number">{{ campus_info.campus_acres }}</span>
+                    <span class="label">Acre Campus</span>
+                  </div>
+                </div>
+                <div class="highlight-item">
+                  <i class="bi bi-people"></i>
+                  <div>
+                    <span class="number">{{ campus_info.total_students }}</span>
+                    <span class="label">Students</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4" data-aos="fade-left" data-aos-delay="300">
+            <div class="hero-visual">
+              <div class="image-stack">
+                <img src="{{ campus_info.image.url }}" alt="Campus View"
+                  class="img-fluid primary-img">
+                <div class="floating-card">
+                  <i class="bi bi-mortarboard"></i>
+                  <span>{{ campus_info.badge_text }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Facilities Categories Grid -->
+      <div class="facilities-grid" data-aos="fade-up" data-aos-delay="200">
+        {% if categories %}
+        {% for category in categories %}
+        <div
+          class="category-card {% if forloop.counter == 1 %}academic{% elif forloop.counter == 2 %}sports{% else %}residence{% endif %}"
+          data-aos="zoom-in"
+          data-aos-delay="{% if forloop.counter == 1 %}100{% elif forloop.counter == 2 %}200{% else %}300{% endif %}">
+          <div class="card-header">
+            <div class="icon-wrapper">
+              <i class="bi {{ category.icon }}"></i>
+            </div>
+            <h3>{{ category.name }}</h3>
+          </div>
+          <div class="card-content">
+            {% with category_facilities=facilities|dictsort:"category" %}
+            {% for facility in facilities %}
+            {% if facility.category.id == category.id %}
+            <div class="facility-image">
+              {% if facility.image %}
+              <img src="{{ facility.image.url }}" alt="{{ facility.name }}" class="img-fluid">
+              {% else %}
+              <img src="{% static 'assets/img/education/campus-7.webp' %}" alt="{{ facility.name }}" class="img-fluid">
+              {% endif %}
+            </div>
+            <div class="facility-list">
+              {% for amenity in facility.amenities_list %}
+              <div class="facility-item">
+                <i class="bi bi-check2-circle"></i>
+                <span>{{ amenity }}</span>
+              </div>
+              {% endfor %}
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endwith %}
+          </div>
+          <div class="card-footer">
+            <a href="#" class="explore-btn">Explore {{ category.name }} <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p class="text-center">No facility categories available.</p>
+        {% endif %}
+      </div>
+
+      <!-- Interactive Campus Tour -->
+      <div class="campus-tour-section" data-aos="fade-up" data-aos-delay="100">
+        <div class="row align-items-center">
+          <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
+            <div class="tour-content">
+              <h2>{{ campus_tour.title }}</h2>
+              <p>{{ campus_tour.description }}</p>
+              <div class="tour-features">
+                {% if campus_tour and campus_tour.features.all %}
+                {% for feature in campus_tour.features.all %}
+                <div class="tour-feature">
+                  <i class="bi {{ feature.icon }}"></i>
+                  <div>
+                    <strong>{{ feature.title }}</strong>
+                    <p>{{ feature.description }}</p>
+                  </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+              </div>
+              <div class="tour-actions">
+                <a href="#schedule-visit-modal" data-bs-toggle="modal" class="btn-outline">Schedule Visit</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6" data-aos="fade-left" data-aos-delay="300">
+            <div class="tour-visual">
+              <div class="video-container">
+                {% if campus_tour.video %}
+                <video autoplay="" muted="" loop="">
+                  <source src="{{ campus_tour.video.url }}" type="video/mp4">
+                </video>
+                {% elif campus_tour.video_url %}
+                <video autoplay="" muted="" loop="">
+                  <source src="{{ campus_tour.video_url }}" type="video/mp4">
+                </video>
+                {% endif %}
+                <div class="play-overlay">
+                  <button class="play-btn">
+                    <i class="bi bi-play-fill"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="schedule-visit-modal" tabindex="-1" aria-labelledby="visitModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="visitModalLabel">Schedule Your Campus Visit</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{% url 'submit_campus_visit_request' %}">
+              {% csrf_token %}
+              <div class="modal-body">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label for="visit_name" class="form-label">Full Name*</label>
+                    <input type="text" class="form-control" id="visit_name" name="name" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="visit_email" class="form-label">Email*</label>
+                    <input type="email" class="form-control" id="visit_email" name="email" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="visit_phone" class="form-label">Phone*</label>
+                    <input type="tel" class="form-control" id="visit_phone" name="phone" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="visit_type" class="form-label">Visit Type*</label>
+                    <select class="form-select" id="visit_type" name="visit_type" required>
+                      <option value="in_person">In-Person Tour</option>
+                      <option value="virtual">Virtual Tour</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="visit_date" class="form-label">Preferred Date*</label>
+                    <input type="date" class="form-control" id="visit_date" name="preferred_date" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="visit_time" class="form-label">Preferred Time*</label>
+                    <input type="time" class="form-control" id="visit_time" name="preferred_time" required>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="visit_count" class="form-label">Number of Visitors</label>
+                    <input type="number" class="form-control" id="visit_count" name="number_of_visitors" value="1"
+                      min="1">
+                  </div>
+                  <div class="col-12">
+                    <label for="visit_requests" class="form-label">Special Requests</label>
+                    <textarea class="form-control" id="visit_requests" name="special_requests" rows="3"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Book Visit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Campus Highlights Carousel -->
+      <div class="highlights-carousel" data-aos="fade-up" data-aos-delay="200">
+        <div class="section-header">
+          <h2>Campus Highlights</h2>
+          <p></p>
+        </div>
+
+        <div class="campus-slider swiper init-swiper">
+          <script type="application/json" class="swiper-config">
+              {
+                "loop": true,
+                "speed": 800,
+                "autoplay": {
+                  "delay": 4000
+                },
+                "slidesPerView": 1,
+                "spaceBetween": 30,
+                "navigation": {
+                  "nextEl": ".swiper-button-next",
+                  "prevEl": ".swiper-button-prev"
+                },
+                "breakpoints": {
+                  "768": {
+                    "slidesPerView": 2
+                  },
+                  "1024": {
+                    "slidesPerView": 3
+                  }
+                }
+              }
+            </script>
+          <div class="swiper-wrapper">
+            {% if highlights %}
+            {% for highlight in highlights %}
+            <div class="swiper-slide">
+              <div class="highlight-card">
+                <div class="card-image">
+                  {% if highlight.image %}
+                  <img src="{{ highlight.image.url }}" alt="{{ highlight.title }}" class="img-fluid" loading="lazy">
+                  {% else %}
+                  <img src="{% static 'assets/img/education/campus-1.webp' %}" alt="{{ highlight.title }}"
+                    class="img-fluid" loading="lazy">
+                  {% endif %}
+                  <div class="image-overlay">
+                    <span class="category-tag">{{ highlight.get_category_display }}</span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <h4>{{ highlight.title }}</h4>
+                  <p>{{ highlight.description }}</p>
+                  <div class="card-stats">
+                    <div class="stat">
+                      <i class="bi {{ highlight.stat1_icon }}"></i>
+                      <span>{{ highlight.stat1_text }}</span>
+                    </div>
+                    <div class="stat">
+                      <i class="bi {{ highlight.stat2_icon }}"></i>
+                      <span>{{ highlight.stat2_text }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="swiper-slide">
+              <p class="text-center">No highlights available yet.</p>
+            </div>
+            {% endif %}
+          </div>
+          <div class="swiper-pagination"></div>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+        </div>
+      </div>
+
+      <!-- Campus Map Integration -->
+      <div class="map-integration" data-aos="fade-up" data-aos-delay="100">
+        <div class="row">
+          <div class="col-lg-12" data-aos="fade-left" data-aos-delay="300">
+            <div class="map-embed">
+              <div class="ratio ratio-4x3">
+                {% if campus_info and campus_info.map_embed_url %}
+                {# Using safe filter if map_embed_url is pre-sanitized #}
+                {{ campus_info.map_embed_url|safe }}
+                {% endif %}
+              </div>
+              <div class="map-overlay-info">
+                <div class="info-card">
+                  <h5>{{ campus_info.title }}
+                  </h5>
+                  <p>{{ campus_info.address|default:"Address not set" }}</p>
+                  <div class="quick-stats">
+                    <span><i class="bi bi-geo-alt"></i>{{ campus_info.campus_acres }}</span>
+                    <span><i class="bi bi-building"></i>{{ campus_info.buildings_count }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section><!-- /Campus Facilities Section -->
+
+</main>
+{% endblock %}
