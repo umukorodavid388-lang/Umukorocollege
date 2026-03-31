@@ -254,6 +254,25 @@ class StatisticAdmin(admin.ModelAdmin):
         # Only one statistic record allowed
         return not Statistic.objects.exists()
 
+@admin.register(PrivacyPolicy)
+class PrivacyPolicyAdmin(admin.ModelAdmin):
+    list_display = ('title', 'effective_date', 'is_active', 'updated_at')
+    list_filter = ('is_active', 'effective_date')
+    search_fields = ('title', 'intro_text', 'body_html', 'contact_email', 'contact_address')
+    readonly_fields = ('created_at', 'updated_at')
+    fieldsets = (
+        ('Main', {
+            'fields': ('title', 'effective_date', 'intro_text', 'body_html', 'is_active')
+        }),
+        ('Contact', {
+            'fields': ('contact_email', 'contact_address')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
 class IconIlines(admin.TabularInline):
     model = Icon
     extra = 1

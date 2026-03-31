@@ -309,3 +309,24 @@ class Testimonial(models.Model):
     
     def __str__(self):
         return f"{self.name} - {self.title}"
+
+
+
+
+class PrivacyPolicy(models.Model):
+    title = models.CharField(max_length=200, default="Privacy Policy")
+    effective_date = models.DateField(null=True, blank=True)
+    intro_text = models.TextField(blank=True)
+    body_html = models.TextField(blank=True, help_text="Full HTML content for the policy body")
+    contact_email = models.EmailField(default="privacy@example.com")
+    contact_address = models.CharField(max_length=255, default="123 Privacy Street, Security City, 12345")
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Privacy Policy"
+        verbose_name_plural = "Privacy Policies"
+
+    def __str__(self):
+        return self.title

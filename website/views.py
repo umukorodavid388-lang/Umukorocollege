@@ -184,7 +184,13 @@ def alumni(request):
 
 
 def privacy(request):
-    return render(request, 'website/privacy.html')
+    from website.models import PrivacyPolicy
+    privacy_policy = PrivacyPolicy.objects.filter(is_active=True).first() or PrivacyPolicy.objects.first()
+
+    context = {
+        'privacy_policy': privacy_policy,
+    }
+    return render(request, 'website/privacy.html', context)
 
 
 def term_services(request):
